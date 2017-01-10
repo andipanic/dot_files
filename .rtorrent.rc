@@ -1,0 +1,4 @@
+directory = ~/torrents
+session = ~/.session
+
+upload_rate = 28
