@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# This file belongs in /etc/grub.d/ as 40_custom on ubuntu 18.04 on my 'flipbook' lappy.
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+menuentry 'Ubuntu (cli only)' --class ubuntu --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-d84303fc-ea8c-4499-97da-2d8d54b1c963' {
+	recordfail
+	load_video
+	gfxmode $linux_gfx_mode
+	insmod gzio
+	if [ x$grub_platform = xxen ]; then insmod xzio; insmod lzopio; fi
+	insmod part_gpt
+	insmod ext2
+	set root='hd0,gpt6'
+	if [ x$feature_platform_search_hint = xy ]; then
+	  search --no-floppy --fs-uuid --set=root --hint-bios=hd0,gpt6 --hint-efi=hd0,gpt6 --hint-baremetal=ahci0,gpt6  d84303fc-ea8c-4499-97da-2d8d54b1c963
+	else
+	  search --no-floppy --fs-uuid --set=root d84303fc-ea8c-4499-97da-2d8d54b1c963
+	fi
+        linux	/boot/vmlinuz-4.15.0-47-generic root=UUID=d84303fc-ea8c-4499-97da-2d8d54b1c963 systemd.unit=multi-user.target ro
+	initrd	/boot/initrd.img-4.15.0-47-generic
+}
+
